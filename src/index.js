@@ -2,6 +2,9 @@
 // import { Mat4 } from "./mat.js";
 // import { Vec3 } from "./vec.js";
 
+import { Mat4 } from "./_mat.js";
+import { Vec3 } from "./_vec.js";
+
 // /**
 //  *
 //  * @template {any} [T=0]
@@ -123,8 +126,12 @@
 // }
 // requestAnimationFrame(draw);
 
-
-
-
 // -------- FUNCTIONAL
 
+let modelMatrix = Mat4.fromRotation(0, new Vec3({ z: 1 }));
+
+let vertex0 = new Vec3({ x: 1 });
+let vertex1 = Vec3.transform(vertex0, modelMatrix);
+
+console.log(vertex0.toString());
+console.log(vertex1.toString());
