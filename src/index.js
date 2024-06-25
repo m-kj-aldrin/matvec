@@ -128,7 +128,13 @@ import { Vec3 } from "./_vec.js";
 
 // -------- FUNCTIONAL
 
-let modelMatrix = Mat4.fromRotation(0, new Vec3({ z: 1 }));
+let rot_m = Mat4.fromRotation(Math.PI * 0.25, new Vec3({ z: 1 }));
+let scale_m = Mat4.fromScale({ x: 1, y: 1 });
+let translate_m = Mat4.fromTranslation({ x: 1 });
+
+let modelMatrix = Mat4.multiply(translate_m, scale_m, rot_m);
+
+console.log(modelMatrix.toString());
 
 let vertex0 = new Vec3({ x: 1 });
 let vertex1 = Vec3.transform(vertex0, modelMatrix);
