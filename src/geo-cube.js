@@ -1,4 +1,4 @@
-import { Vec3 } from "./_vec.js";
+import { Vec3 } from "./vec.js";
 
 export default function (size = 1) {
   let w = size / 2;
@@ -18,9 +18,9 @@ export default function (size = 1) {
     new Vec3({ x: -w, y: -w, z: -d }), //7
   ];
 
-  let red = [255, 0, 0];
-  let blue = [0, 0, 255];
-  let green = [0, 255, 0];
+  let red = [255, 64, 32];
+  let blue = [0, 96, 255];
+  let green = [32, 255, 32];
 
   let faces = [
     //front
