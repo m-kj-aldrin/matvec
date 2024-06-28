@@ -1,21 +1,6 @@
 // import geoCube from "./geo-cube.js";
-// import { Mat4 } from "./mat.js";
-// import { Vec3 } from "./vec.js";
-
 import { Mat4 } from "./_mat.js";
 import { Vec3 } from "./_vec.js";
-
-// /**
-//  *
-//  * @template {any} [T=0]
-//  * @param {number} w
-//  * @param {number} h
-//  * @param {(...args:any[])=>T} [init]
-//  * @returns {T[][]}
-//  */
-// function grid(w = 1, h = 1, init = () => 0) {
-//   return Array.from({ length: h }, (_, y) => Array.from({ length: w }, (_, x) => init(x, y)));
-// }
 
 // const canvas = document.createElement("canvas");
 // document.body.appendChild(canvas);
@@ -26,29 +11,16 @@ import { Vec3 } from "./_vec.js";
 
 // const ctx = canvas.getContext("2d");
 
-// let cameraPos = new Vec3(5, 5, 5);
-// let cameraTarget = new Vec3(0, 0, 0);
-// let viewMatrix = Mat4.fromView(cameraPos, cameraTarget, new Vec3(0, 1, 0));
-// let screenSpaceM = Mat4.fromScale(canvas.width / 2 / aspect, canvas.height / 2, 1).translate(
-//   canvas.width / 2,
-//   canvas.height / 2,
-//   0
-// );
-// let yFlip = Mat4.fromScale(1, -1, 1);
+// let cameraPos = new Vec3({ x: 5, y: 5, z: 5 });
+// let cameraTarget = new Vec3();
+// let viewMatrix = Mat4.fromView(cameraPos, cameraTarget, new Vec3({ y: 1 }));
+// let screenSpaceM = Mat4.fromScale({ x: canvas.width / 2 / aspect, y: canvas.height / 2 });
 
-// let lightPos = new Vec3(3, 3, 3);
+// let yFlip = Mat4.fromScale({ y: -1 });
 
-// /**
-//  *
-//  * @param {Vec3} v
-//  * @param {Mat4} viewMatrix
-//  * @param {Mat4} projectionMatrix
-//  */
-// function project(viewMatrix, projectionMatrix, v) {
-//   let m = Mat4.mult(projectionMatrix, yFlip, viewMatrix);
-//   let tv = Vec3.transform(v, m);
-//   return tv;
-// }
+// let lightPos = new Vec3({ x: 3, y: 3, z: 3 });
+
+// console.log(screenSpaceM.toString());
 
 // let c = geoCube(0.5);
 
@@ -63,18 +35,20 @@ import { Vec3 } from "./_vec.js";
 
 //   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-//   let modelMatrix = Mat4.fromTranslation(0, 0, 0.25)
-//     .scale(1, 1, 1)
-//     .rotate(t, new Vec3(0.125, -0.95, 0.25))
-//     .rotate(t * 0.5, new Vec3(-0.5, 0.1, 0.3));
+//   let modelMatrix = Mat4.fromTranslation({ z: 0.25 })
+//     .rotate(t, { x: 0.125, y: -0.95, z: 0.25 })
+//     .rotate(t * 0.5, { x: -0.5, y: 0.1, z: 0.3 });
 
-//   let worldMatrix = Mat4.mult(screenSpaceM, yFlip, viewMatrix);
+//   let worldMatrix = Mat4.multiply(screenSpaceM, yFlip, viewMatrix);
 
 //   let projectedVerticies = c.verticies.map((v) => {
-//     let tv = Vec3.transform(v, modelMatrix);
-//     tv.transform(worldMatrix);
+//     let m = Mat4.multiply(worldMatrix, modelMatrix);
+//     let tv = Vec3.transform(v, m);
 //     return tv;
 //   });
+
+//   console.log(c.verticies.map((v) => v.toString()).join("\n"));
+//   console.log(projectedVerticies.map((v) => v.toString()).join("\n"));
 
 //   let sortedFaces = [...c.faces].sort((a, b) => {
 //     let ca = a.indicies.reduce((d, index) => {
@@ -92,7 +66,10 @@ import { Vec3 } from "./_vec.js";
 //   ctx.lineCap = "square";
 
 //   sortedFaces.forEach((face, fi) => {
-//     let n = Vec3.transform(face.normal, modelMatrix, true).transform(viewMatrix, true).normalize();
+//     let n = face.normal.copy();
+//     n.w = 0;
+//     let m = Mat4.multiply(viewMatrix, modelMatrix);
+//     n.transform(m).normalize();
 
 //     ctx.beginPath();
 //     face.indicies.forEach((index, i) => {
@@ -111,10 +88,11 @@ import { Vec3 } from "./_vec.js";
 
 //     let [r, g, b] = face.color.map((c) => c * light);
 //     ctx.fillStyle = `rgb(${r},${g},${b})`;
+//     ctx.fillStyle = "red";
 //     ctx.fill();
 //   });
 
-//   requestAnimationFrame(draw);
+//   // requestAnimationFrame(draw);
 // }
 
 // /**
@@ -128,16 +106,14 @@ import { Vec3 } from "./_vec.js";
 
 // -------- FUNCTIONAL
 
-let rot_m = Mat4.fromRotation(Math.PI * 0.25, new Vec3({ z: 1 }));
-let scale_m = Mat4.fromScale({ x: 1, y: 1 });
-let translate_m = Mat4.fromTranslation({ x: 1 });
+let cameraPos = new Vec3({ x: 5, y: 5, z: 5 });
+let cameraTarget = new Vec3();
 
-let modelMatrix = Mat4.multiply(translate_m, scale_m, rot_m);
+let viewMatrix = Mat4.fromView(cameraPos, cameraTarget, new Vec3({ y: 1 }));
 
-console.log(modelMatrix.toString());
+let vertex0 = new Vec3({ x: -0.25, y: 0.125, z: -0.5 });
 
-let vertex0 = new Vec3({ x: 1 });
-let vertex1 = Vec3.transform(vertex0, modelMatrix);
+let transformed_vertex0 = Vec3.transform(vertex0, viewMatrix);
 
 console.log(vertex0.toString());
-console.log(vertex1.toString());
+console.log(transformed_vertex0.toString());
