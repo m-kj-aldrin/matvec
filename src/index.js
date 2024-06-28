@@ -111,6 +111,8 @@ let cameraTarget = new Vec3();
 
 let viewMatrix = Mat4.fromView(cameraPos, cameraTarget, new Vec3({ y: 1 }));
 
+console.log(viewMatrix.toString());
+
 let vertex0 = new Vec3({ x: -0.25, y: 0.125, z: -0.5 });
 
 let transformed_vertex0 = Vec3.transform(vertex0, viewMatrix);
