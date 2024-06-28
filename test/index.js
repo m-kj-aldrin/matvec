@@ -1,5 +1,5 @@
-import { Mat4 } from "./mat.js";
-import { Vec3 } from "./vec.js";
+import { Mat4 } from "../src/mat.js";
+import { Vec3 } from "../src/vec.js";
 
 import geoCube from "./geo-cube.js";
 
